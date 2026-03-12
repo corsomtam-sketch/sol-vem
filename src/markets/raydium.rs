@@ -35,7 +35,7 @@ impl RaydiumDEX {
 
         let mut pools_vec = Vec::new();
         
-        let data = fs::read_to_string("src\\markets\\cache\\raydium-markets.json").expect("Error reading file");
+        let data = fs::read_to_string("src/markets/cache/raydium-markets.json").expect("Error reading file");
         let json_value: Root  = serde_json::from_str(&data).unwrap();
 
         
@@ -89,7 +89,7 @@ impl RaydiumDEX {
 //         let json: Root = serde_json::from_str(&response.text().await?)?;        
 //         // let json = &response.text().await?;        
 //         info!("json: {:?}", json);
-//         let mut file = File::create("src\\markets\\cache\\raydium-markets.json")?;
+//         let mut file = File::create("src/markets/cache/raydium-markets.json")?;
 //         file.write_all(serde_json::to_string(&json)?.as_bytes())?;
 //         info!("Data written to 'raydium-markets.json' successfully.");
 //     } else {

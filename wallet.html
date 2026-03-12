@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VeM Bot Wallet</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0d0d0d;
+      color: #e0e0e0;
+      font-family: 'Courier New', monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .card {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      padding: 32px;
+      width: 100%;
+      max-width: 480px;
+    }
+    .title {
+      font-size: 11px;
+      color: #555;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .label {
+      font-size: 11px;
+      color: #555;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .address {
+      font-size: 12px;
+      color: #888;
+      word-break: break-all;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+    .balance-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 8px;
+    }
+    .sol-amount {
+      font-size: 36px;
+      font-weight: bold;
+      color: #14f195;
+    }
+    .sol-symbol {
+      font-size: 16px;
+      color: #555;
+      margin-left: 6px;
+    }
+    .usd-value {
+      font-size: 18px;
+      color: #888;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid #2a2a2a;
+      margin: 24px 0;
+    }
+    .status {
+      font-size: 12px;
+      color: #555;
+      margin-bottom: 16px;
+    }
+    .status span { color: #14f195; }
+    .refresh-btn {
+      background: #1f1f1f;
+      border: 1px solid #2a2a2a;
+      color: #888;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      letter-spacing: 1px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .refresh-btn:hover {
+      border-color: #14f195;
+      color: #14f195;
+    }
+    .error { color: #ff4444; font-size: 13px; }
+    .loading { color: #555; font-size: 13px; }
+    .links {
+      margin-top: 20px;
+      font-size: 11px;
+    }
+    .links a {
+      color: #555;
+      text-decoration: none;
+      margin-right: 16px;
+    }
+    .links a:hover { color: #14f195; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="title">VeM Bot — Wallet</div>
+
+    <div class="label">Address</div>
+    <div class="address" id="address">814vLfsR7MXxUPFynnfDCrfAp7nxQX8tW8GQR8dAe7ku</div>
+
+    <div class="label">SOL Balance</div>
+    <div class="balance-row">
+      <div>
+        <span class="sol-amount" id="sol-balance">—</span>
+        <span class="sol-symbol">SOL</span>
+      </div>
+      <div class="usd-value" id="usd-value">—</div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="status" id="status">Loading...</div>
+    <button class="refresh-btn" onclick="load()">↻ Refresh</button>
+
+    <div class="links">
+      <a href="https://solscan.io/account/814vLfsR7MXxUPFynnfDCrfAp7nxQX8tW8GQR8dAe7ku" target="_blank">Solscan ↗</a>
+      <a href="https://explorer.solana.com/address/814vLfsR7MXxUPFynnfDCrfAp7nxQX8tW8GQR8dAe7ku" target="_blank">Explorer ↗</a>
+    </div>
+  </div>
+
+  <script>
+    const RPC = "https://mainnet.helius-rpc.com/?api-key=152abbbd-f2ab-4f35-8528-bb0756453e5b";
+    const WALLET = "814vLfsR7MXxUPFynnfDCrfAp7nxQX8tW8GQR8dAe7ku";
+
+    async function getSolBalance() {
+      const res = await fetch(RPC, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          jsonrpc: "2.0", id: 1,
+          method: "getBalance",
+          params: [WALLET]
+        })
+      });
+      const data = await res.json();
+      return data.result.value / 1e9;
+    }
+
+    async function getSolPrice() {
+      const res = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd");
+      const data = await res.json();
+      return data.solana.usd;
+    }
+
+    async function load() {
+      document.getElementById("status").innerHTML = "Fetching...";
+      document.getElementById("sol-balance").textContent = "—";
+      document.getElementById("usd-value").textContent = "—";
+      try {
+        const [sol, price] = await Promise.all([getSolBalance(), getSolPrice()]);
+        document.getElementById("sol-balance").textContent = sol.toFixed(4);
+        document.getElementById("usd-value").textContent = "$" + (sol * price).toFixed(2);
+        const now = new Date().toLocaleTimeString();
+        document.getElementById("status").innerHTML = `Last updated: <span>${now}</span> · SOL price: <span>$${price.toLocaleString()}</span>`;
+      } catch (e) {
+        document.getElementById("status").innerHTML = `<span class="error">Error: ${e.message}</span>`;
+      }
+    }
+
+    load();
+    setInterval(load, 30000); // auto-refresh every 30s
+  </script>
+</body>
+</html>

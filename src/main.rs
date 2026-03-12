@@ -41,7 +41,7 @@ async fn main() -> Result<()> {
     let optimism_strategie: bool = true;
 
     //massive_strategie options
-    let fetch_new_pools = false;
+    let fetch_new_pools = true; // First run: fetch fresh data to populate cache files
             // Restrict USDC/SOL pools to 2 markets
     let restrict_sol_usdc = true;
 
@@ -105,31 +105,8 @@ async fn main() -> Result<()> {
     // // The first token is the base token (here SOL)
     let tokens_to_arb: Vec<TokenInArb> = inputs_vec.clone().into_iter().flat_map(|input| input.tokens_to_arb).collect();
 
-    info!("Open Socket IO channel...");
+    // Socket IO channel disabled — not required for core arbitrage logic
     let env = Env::new();
-    
-    let callback = |payload: Payload, socket: Client| {
-        async move {
-            match payload {
-                Payload::String(data) => println!("Received: {}", data),
-                Payload::Binary(bin_data) => println!("Received bytes: {:#?}", bin_data),
-                Payload::Text(data) => println!("Received Text: {:?}", data),
-            }
-        }
-        .boxed()
-    };
-    
-    let mut socket = ClientBuilder::new("http://localhost:3000")
-        .namespace("/")
-        .on("connection", callback)
-        .on("error", |err, _| {
-            async move { eprintln!("Error: {:#?}", err) }.boxed()
-        })
-        .on("orca_quote", callback)
-        .on("orca_quote_res", callback)
-        .connect()
-        .await
-        .expect("Connection failed");
 
 
     if massive_strategie {

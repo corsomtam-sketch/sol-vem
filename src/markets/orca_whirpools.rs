@@ -35,7 +35,7 @@ impl OrcaDexWhirpools {
 
         let mut pools_vec = Vec::new();
         
-        let data = fs::read_to_string("src\\markets\\cache\\orca_whirpools-markets.json").expect("Error reading file");
+        let data = fs::read_to_string("src/markets/cache/orca_whirpools-markets.json").expect("Error reading file");
         let json_value: Root = serde_json::from_str(&data).unwrap();
 
         // println!("JSON Pools: {:?}", json_value.whirlpools);
@@ -172,7 +172,7 @@ pub async fn fetch_data_orca_whirpools() -> Result<(), Box<dyn std::error::Error
     if response.status().is_success() {
         let json: Root = serde_json::from_str(&response.text().await?)?;        
         // info!("json: {:?}", json);
-        let mut file = File::create("src\\markets\\cache\\orca_whirpools-markets.json")?;
+        let mut file = File::create("src/markets/cache/orca_whirpools-markets.json")?;
         file.write_all(serde_json::to_string(&json)?.as_bytes())?;
         info!("Data written to 'orca_whirpools-markets.json' successfully.");
     } else {
