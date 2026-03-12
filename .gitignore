@@ -9,6 +9,7 @@
 /node_modules
 /history
 .env
+.DS_Store
 PseudoCode.md
 src/markets/cache/meteora-markets.json
 best_paths_selected/*

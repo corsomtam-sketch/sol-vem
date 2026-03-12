@@ -47,7 +47,7 @@ async fn main() -> Result<()> {
 
     //best_strategie options
     // let mut path_best_strategie: String = format!("best_paths_selected/SOL-SOLLY.json");
-    let mut path_best_strategie: String = format!("best_paths_selected/ultra_strategies/0-SOL-SOLLY-1-SOL-SPIKE-2-SOL-AMC-GME.json");
+    let mut path_best_strategie: String = format!("best_paths_selected/ultra_strategies/0-SOL-USDC-1-SOL-whETH-2-SOL-JUP.json");
     
     
     //Optism tx to send
@@ -63,70 +63,34 @@ async fn main() -> Result<()> {
     let mut inputs_vec = vec![
         InputVec{
             tokens_to_arb: vec![
-                TokenInArb{address: String::from("So11111111111111111111111111111111111111112"), symbol: String::from("SOL")}, // Base token here
-                TokenInArb{address: String::from("4Cnk9EPnW5ixfLZatCPJjDB1PUtcRpVVgTQukm9epump"), symbol: String::from("DADDY-ANSEM")},
- 
+                TokenInArb{address: String::from("So11111111111111111111111111111111111111112"), symbol: String::from("SOL")}, // Base token
+                TokenInArb{address: String::from("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"), symbol: String::from("USDC")},
             ],
             include_1hop: true,
             include_2hop: true,
             numbers_of_best_paths: 4,
-            // When we have more than 3 tokens it's better to desactivate caused by timeout on multiples getProgramAccounts calls
             get_fresh_pools_bool: false
         },
         InputVec{
             tokens_to_arb: vec![
-                TokenInArb{address: String::from("So11111111111111111111111111111111111111112"), symbol: String::from("SOL")}, // Base token here
-                TokenInArb{address: String::from("2J5uSgqgarWoh7QDBmHSDA3d7UbfBKDZsdy1ypTSpump"), symbol: String::from("DADDY-TATE")},
-
+                TokenInArb{address: String::from("So11111111111111111111111111111111111111112"), symbol: String::from("SOL")}, // Base token
+                TokenInArb{address: String::from("7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs"), symbol: String::from("whETH")},
             ],
             include_1hop: true,
             include_2hop: true,
             numbers_of_best_paths: 4,
-            // When we have more than 3 tokens it's better to desactivate caused by timeout on multiples getProgramAccounts calls
             get_fresh_pools_bool: false
         },
         InputVec{
             tokens_to_arb: vec![
-                TokenInArb{address: String::from("So11111111111111111111111111111111111111112"), symbol: String::from("SOL")}, // Base token here
-                TokenInArb{address: String::from("BX9yEgW8WkoWV8SvqTMMCynkQWreRTJ9ZS81dRXYnnR9"), symbol: String::from("SPIKE")},
-
-            ],
-            include_1hop: true,
-            include_2hop: true,
-            numbers_of_best_paths: 2,
-            // When we have more than 3 tokens it's better to desactivate caused by timeout on multiples getProgramAccounts calls
-            get_fresh_pools_bool: false
-        },
-        //////////////
-        //////////////
-        //////////////
-        //////////////
-        //////////////
-        //////////////
-        InputVec{
-            tokens_to_arb: vec![
-                TokenInArb{address: String::from("So11111111111111111111111111111111111111112"), symbol: String::from("SOL")}, // Base token here
-                TokenInArb{address: String::from("9jaZhJM6nMHTo4hY9DGabQ1HNuUWhJtm7js1fmKMVpkN"), symbol: String::from("AMC")},
-                TokenInArb{address: String::from("8wXtPeU6557ETkp9WHFY1n1EcU6NxDvbAggHGsMYiHsB"), symbol: String::from("GME")},
-                // TokenInArb{address: String::from("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"), symbol: String::from("USDC")},
-                // TokenInArb{address: String::from("5BKTP1cWao5dhr8tkKcfPW9mWkKtuheMEAU6nih2jSX"), symbol: String::from("NoHat")},
+                TokenInArb{address: String::from("So11111111111111111111111111111111111111112"), symbol: String::from("SOL")}, // Base token
+                TokenInArb{address: String::from("JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN"), symbol: String::from("JUP")},
             ],
             include_1hop: true,
             include_2hop: true,
             numbers_of_best_paths: 4,
-            // When we have more than 3 tokens it's better to desactivate caused by timeout on multiples getProgramAccounts calls
             get_fresh_pools_bool: false
         },
-        // InputVec{
-        //     tokens_to_arb: vec![
-        //         TokenInArb{address: String::from("So11111111111111111111111111111111111111112"), symbol: String::from("SOL")}, // Base token here
-        //         TokenInArb{address: String::from("8NH3AfwkizHmbVd83SSxc2YbsFmFL4m2BeepvL6upump"), symbol: String::from("TOPG")},
-        //     ],
-        //     include_1hop: true,
-        //     include_2hop: true,
-        //     numbers_of_best_paths: 2,
-        //     get_fresh_pools_bool: false
-        // },
     ];
 
     dotenv::dotenv().ok();
