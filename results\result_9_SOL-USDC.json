@@ -1,0 +1,41 @@
+{
+  "result": [
+    {
+      "path_id": 2414,
+      "hops": 1,
+      "tokens_path": "SOL-USDC-SOL",
+      "route_simulations": [
+        {
+          "id_route": 82,
+          "pool_address": "Dvr7yVzpsjxoRpAjH7f1zt8C3oYxDKuwQmePMgT6Xcik",
+          "dex_label": "METEORA",
+          "token_0to1": true,
+          "token_in": "So11111111111111111111111111111111111111112",
+          "token_out": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+          "amount_in": 3500000000,
+          "estimated_amount_out": "312269696",
+          "estimated_min_amount_out": "310708348"
+        },
+        {
+          "id_route": 73,
+          "pool_address": "2sf5NYcY4zUPXUSmG6f66mskb24t5F8S11pC1Nz5nQT3",
+          "dex_label": "METEORA",
+          "token_0to1": false,
+          "token_in": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+          "token_out": "So11111111111111111111111111111111111111112",
+          "amount_in": 312269696,
+          "estimated_amount_out": "3500818394",
+          "estimated_min_amount_out": "3483314303"
+        }
+      ],
+      "token_in": "So11111111111111111111111111111111111111112",
+      "token_in_symbol": "SOL",
+      "token_out": "So11111111111111111111111111111111111111112",
+      "token_out_symbol": "SOL",
+      "amount_in": 3500000000,
+      "estimated_amount_out": "3500818394",
+      "estimated_min_amount_out": "3483314303",
+      "result": 818394.0
+    }
+  ]
+}

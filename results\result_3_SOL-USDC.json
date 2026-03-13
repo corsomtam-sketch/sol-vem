@@ -1,0 +1,263 @@
+{
+  "result": [
+    {
+      "path_id": 667,
+      "hops": 1,
+      "tokens_path": "SOL-USDC-SOL",
+      "route_simulations": [
+        {
+          "id_route": 22,
+          "pool_address": "5BoHD7DAHsGCA9D8eUkkZTgWTrnpad6G18MnTq3cUS86",
+          "dex_label": "METEORA",
+          "token_0to1": true,
+          "token_in": "So11111111111111111111111111111111111111112",
+          "token_out": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+          "amount_in": 3500000000,
+          "estimated_amount_out": "312594473",
+          "estimated_min_amount_out": "311031501"
+        },
+        {
+          "id_route": 61,
+          "pool_address": "5DLLzhC3o53safWkHjkYDVkabBZ1tzfpyXVj1gBrTtr6",
+          "dex_label": "METEORA",
+          "token_0to1": false,
+          "token_in": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+          "token_out": "So11111111111111111111111111111111111111112",
+          "amount_in": 312594473,
+          "estimated_amount_out": "3499416935",
+          "estimated_min_amount_out": "3481919851"
+        }
+      ],
+      "token_in": "So11111111111111111111111111111111111111112",
+      "token_in_symbol": "SOL",
+      "token_out": "So11111111111111111111111111111111111111112",
+      "token_out_symbol": "SOL",
+      "amount_in": 3500000000,
+      "estimated_amount_out": "3499416935",
+      "estimated_min_amount_out": "3481919851",
+      "result": -583065.0
+    },
+    {
+      "path_id": 671,
+      "hops": 1,
+      "tokens_path": "SOL-USDC-SOL",
+      "route_simulations": [
+        {
+          "id_route": 22,
+          "pool_address": "5BoHD7DAHsGCA9D8eUkkZTgWTrnpad6G18MnTq3cUS86",
+          "dex_label": "METEORA",
+          "token_0to1": true,
+          "token_in": "So11111111111111111111111111111111111111112",
+          "token_out": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+          "amount_in": 3500000000,
+          "estimated_amount_out": "312594473",
+          "estimated_min_amount_out": "311031501"
+        },
+        {
+          "id_route": 69,
+          "pool_address": "5PfLDPaDHJFLSpoAqDGCpBpN1BSNMyoQSiffhVBhKsMt",
+          "dex_label": "METEORA",
+          "token_0to1": false,
+          "token_in": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+          "token_out": "So11111111111111111111111111111111111111112",
+          "amount_in": 312594473,
+          "estimated_amount_out": "3499079140",
+          "estimated_min_amount_out": "3481583745"
+        }
+      ],
+      "token_in": "So11111111111111111111111111111111111111112",
+      "token_in_symbol": "SOL",
+      "token_out": "So11111111111111111111111111111111111111112",
+      "token_out_symbol": "SOL",
+      "amount_in": 3500000000,
+      "estimated_amount_out": "3499079140",
+      "estimated_min_amount_out": "3481583745",
+      "result": -920860.0
+    },
+    {
+      "path_id": 682,
+      "hops": 1,
+      "tokens_path": "SOL-USDC-SOL",
+      "route_simulations": [
+        {
+          "id_route": 22,
+          "pool_address": "5BoHD7DAHsGCA9D8eUkkZTgWTrnpad6G18MnTq3cUS86",
+          "dex_label": "METEORA",
+          "token_0to1": true,
+          "token_in": "So11111111111111111111111111111111111111112",
+          "token_out": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+          "amount_in": 3500000000,
+          "estimated_amount_out": "312594473",
+          "estimated_min_amount_out": "311031501"
+        },
+        {
+          "id_route": 91,
+          "pool_address": "CR2kQQcALb9FpA5y5KA7oa3Kf1kZ63Tz6uSQyG2yzPc6",
+          "dex_label": "METEORA",
+          "token_0to1": false,
+          "token_in": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+          "token_out": "So11111111111111111111111111111111111111112",
+          "amount_in": 312594473,
+          "estimated_amount_out": "3498631132",
+          "estimated_min_amount_out": "3481137977"
+        }
+      ],
+      "token_in": "So11111111111111111111111111111111111111112",
+      "token_in_symbol": "SOL",
+      "token_out": "So11111111111111111111111111111111111111112",
+      "token_out_symbol": "SOL",
+      "amount_in": 3500000000,
+      "estimated_amount_out": "3498631132",
+      "estimated_min_amount_out": "3481137977",
+      "result": -1368868.0
+    },
+    {
+      "path_id": 803,
+      "hops": 1,
+      "tokens_path": "SOL-USDC-SOL",
+      "route_simulations": [
+        {
+          "id_route": 26,
+          "pool_address": "91Q7G5n6Ux2qYo8vMMiuPGY5bJrjbuMucc8kmncAuqqn",
+          "dex_label": "METEORA",
+          "token_0to1": true,
+          "token_in": "So11111111111111111111111111111111111111112",
+          "token_out": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+          "amount_in": 3500000000,
+          "estimated_amount_out": "312732349",
+          "estimated_min_amount_out": "311168688"
+        },
+        {
+          "id_route": 101,
+          "pool_address": "3D9MyL5iD9uqbe2FYvivHsywHWr3nJR1krEcEWXUCGzr",
+          "dex_label": "METEORA",
+          "token_0to1": false,
+          "token_in": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+          "token_out": "So11111111111111111111111111111111111111112",
+          "amount_in": 312732349,
+          "estimated_amount_out": "3500418884",
+          "estimated_min_amount_out": "3482916790"
+        }
+      ],
+      "token_in": "So11111111111111111111111111111111111111112",
+      "token_in_symbol": "SOL",
+      "token_out": "So11111111111111111111111111111111111111112",
+      "token_out_symbol": "SOL",
+      "amount_in": 3500000000,
+      "estimated_amount_out": "3500418884",
+      "estimated_min_amount_out": "3482916790",
+      "result": 418884.0
+    },
+    {
+      "path_id": 804,
+      "hops": 1,
+      "tokens_path": "SOL-USDC-SOL",
+      "route_simulations": [
+        {
+          "id_route": 26,
+          "pool_address": "91Q7G5n6Ux2qYo8vMMiuPGY5bJrjbuMucc8kmncAuqqn",
+          "dex_label": "METEORA",
+          "token_0to1": true,
+          "token_in": "So11111111111111111111111111111111111111112",
+          "token_out": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+          "amount_in": 3500000000,
+          "estimated_amount_out": "312732349",
+          "estimated_min_amount_out": "311168688"
+        },
+        {
+          "id_route": 103,
+          "pool_address": "6d4UYGAEs4Akq6py8Vb3Qv5PvMkecPLS1Z9bBCcip2R7",
+          "dex_label": "ORCA_WHIRLPOOLS",
+          "token_0to1": false,
+          "token_in": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+          "token_out": "So11111111111111111111111111111111111111112",
+          "amount_in": 312732349,
+          "estimated_amount_out": "3500573532",
+          "estimated_min_amount_out": "3483070665"
+        }
+      ],
+      "token_in": "So11111111111111111111111111111111111111112",
+      "token_in_symbol": "SOL",
+      "token_out": "So11111111111111111111111111111111111111112",
+      "token_out_symbol": "SOL",
+      "amount_in": 3500000000,
+      "estimated_amount_out": "3500573532",
+      "estimated_min_amount_out": "3483070665",
+      "result": 573532.0
+    },
+    {
+      "path_id": 892,
+      "hops": 1,
+      "tokens_path": "SOL-USDC-SOL",
+      "route_simulations": [
+        {
+          "id_route": 30,
+          "pool_address": "8M5rjeDQKW4w4rmWFQLTqCYVuA1rMe9Z2QQ2SZResD9M",
+          "dex_label": "METEORA",
+          "token_0to1": true,
+          "token_in": "So11111111111111111111111111111111111111112",
+          "token_out": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+          "amount_in": 3500000000,
+          "estimated_amount_out": "312546387",
+          "estimated_min_amount_out": "310983656"
+        },
+        {
+          "id_route": 47,
+          "pool_address": "Czfq3xZZDmsdGdUyrNLtRhGc47cXcZtLG4crryfu44zE",
+          "dex_label": "ORCA_WHIRLPOOLS",
+          "token_0to1": false,
+          "token_in": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+          "token_out": "So11111111111111111111111111111111111111112",
+          "amount_in": 312546387,
+          "estimated_amount_out": "3500182381",
+          "estimated_min_amount_out": "3482681470"
+        }
+      ],
+      "token_in": "So11111111111111111111111111111111111111112",
+      "token_in_symbol": "SOL",
+      "token_out": "So11111111111111111111111111111111111111112",
+      "token_out_symbol": "SOL",
+      "amount_in": 3500000000,
+      "estimated_amount_out": "3500182381",
+      "estimated_min_amount_out": "3482681470",
+      "result": 182381.0
+    },
+    {
+      "path_id": 893,
+      "hops": 1,
+      "tokens_path": "SOL-USDC-SOL",
+      "route_simulations": [
+        {
+          "id_route": 30,
+          "pool_address": "8M5rjeDQKW4w4rmWFQLTqCYVuA1rMe9Z2QQ2SZResD9M",
+          "dex_label": "METEORA",
+          "token_0to1": true,
+          "token_in": "So11111111111111111111111111111111111111112",
+          "token_out": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+          "amount_in": 3500000000,
+          "estimated_amount_out": "312546387",
+          "estimated_min_amount_out": "310983656"
+        },
+        {
+          "id_route": 49,
+          "pool_address": "7xuPLn8Bun4ZGHeD95xYLnPKReKtSe7zfVRzRJWJZVZW",
+          "dex_label": "ORCA_WHIRLPOOLS",
+          "token_0to1": false,
+          "token_in": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+          "token_out": "So11111111111111111111111111111111111111112",
+          "amount_in": 312546387,
+          "estimated_amount_out": "3500166277",
+          "estimated_min_amount_out": "3482665446"
+        }
+      ],
+      "token_in": "So11111111111111111111111111111111111111112",
+      "token_in_symbol": "SOL",
+      "token_out": "So11111111111111111111111111111111111111112",
+      "token_out_symbol": "SOL",
+      "amount_in": 3500000000,
+      "estimated_amount_out": "3500166277",
+      "estimated_min_amount_out": "3482665446",
+      "result": 166277.0
+    }
+  ]
+}
