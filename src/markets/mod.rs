@@ -6,3 +6,4 @@ pub mod meteora;
 pub mod types;
 pub mod utils;
 pub mod pools;
+pub mod jupiter;

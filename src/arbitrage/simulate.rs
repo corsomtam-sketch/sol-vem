@@ -4,8 +4,8 @@ use log::info;
 use log::error;
 use rust_socketio::asynchronous::Client;
 
-use crate::markets::meteora::simulate_route_meteora;
-use crate::markets::{orca_whirpools::simulate_route_orca_whirpools, raydium::simulate_route_raydium, types::{DexLabel, Market}};
+use crate::markets::jupiter::simulate_route_jupiter;
+use crate::markets::types::{DexLabel, Market};
 use super::types::{SwapPath, SwapRouteSimulation, TokenInfos};
 
 pub async fn simulate_path(simulation_amount: u64, path: SwapPath, markets: Vec<Market>, tokens_infos: HashMap<String, TokenInfos>, mut route_simulation: HashMap<Vec<u32>, Vec<SwapRouteSimulation>>) -> (HashMap<Vec<u32>, Vec<SwapRouteSimulation>>, Vec<SwapRouteSimulation>, f64) {
@@ -53,120 +53,24 @@ pub async fn simulate_path(simulation_amount: u64, path: SwapPath, markets: Vec<
             }
             //...
         }
-        match route.dex {
-            DexLabel::ORCA => {
-                println!(" ⚠️⚠️ ONE ORCA POOL ");
+        let dex_label = route.dex.clone();
+        match dex_label {
+            DexLabel::ORCA | DexLabel::RAYDIUM_CLMM => {
+                // Not implemented — skip path
+                let empty_result: Vec<SwapRouteSimulation> = Vec::new();
+                return (route_simulation, empty_result, 0.0);
             },
-            DexLabel::ORCA_WHIRLPOOLS => {
-                println!("🏊 ORCA_WHIRLPOOLS - POOL");
+            DexLabel::ORCA_WHIRLPOOLS | DexLabel::RAYDIUM | DexLabel::METEORA => {
+                println!("🏊 {:?} - POOL", dex_label);
                 println!("Address: {:?}", route.pool_address);
-                match simulate_route_orca_whirpools(true, amount_in, route.clone(), market.unwrap(), tokens_infos.clone()).await {
+                match simulate_route_jupiter(amount_in, &route.tokenIn, &route.tokenOut).await {
                     Ok(value) => {
                         let (amount_out, min_amount_out) = value;
-                        // println!("Amount out: {}", amount_out);
-                        
-                        let swap_sim: SwapRouteSimulation = SwapRouteSimulation{
-                            id_route: route.id.clone(),
-                            pool_address: route.pool_address.clone(),
-                            dex_label: DexLabel::ORCA_WHIRLPOOLS,
-                            token_0to1: route.token_0to1,
-                            token_in: route.tokenIn.clone(),
-                            token_out: route.tokenOut.clone(),
-                            amount_in: amount_in,
-                            estimated_amount_out: amount_out.clone(),
-                            estimated_min_amount_out: min_amount_out.clone(),
-                        };
-        
-                        //1rst route
-                        if i == 0 && !route_simulation.contains_key(&vec![path.id_paths[i]]) {
-                            route_simulation.insert(vec![route.id], vec![swap_sim.clone()]);
-                        }
-        
-                        //2nd route
-                        if i == 1 && path.hops == 2 && !route_simulation.contains_key(&vec![path.id_paths[i - 1], path.id_paths[i]]){
-                            let swap_sim_prev_route = route_simulation.get(&vec![path.id_paths[i - 1]]).unwrap();
-                            route_simulation.insert(vec![path.id_paths[i - 1], path.id_paths[i]], vec![swap_sim_prev_route[0].clone() , swap_sim.clone()]);
-                        }
-        
-                        swap_simulation_result.push(swap_sim.clone());
-                        amount_in = amount_out.as_str().parse().expect("Bad conversion String to f64");
-                    }
-                    Err(value) => {
-                        // println!("❌ ERROR HANDLED for route: {:?}", path.id_paths);
-                        error!("❌ ERROR HANDLED for route: {:?}", path.id_paths);
-                        error!("ORCA_WHIRLPOOLS POOL");
-                        error!("Address: {:?}", route.pool_address);
-                        // println!("❌ ERROR {:?}", value);
-                        error!("ERROR {:?}", value);
-                        println!("🔚 Skipped Path");
-                        let empty_result: Vec<SwapRouteSimulation> = Vec::new();
-                        return (route_simulation, empty_result, 0.0);
-                    }
-                }
-            },
-            DexLabel::RAYDIUM => {
-                println!("🏊 RAYDIUM - POOL");
-                println!("Address: {:?}", route.pool_address);
-                match simulate_route_raydium(true, amount_in, route.clone(), market.unwrap(), tokens_infos.clone()).await {
-                    Ok(value) => {
-                        let (amount_out, min_amount_out) = value;
-                        // println!("Amount out: {}", amount_out);
-        
-                        let swap_sim: SwapRouteSimulation = SwapRouteSimulation{
-                            id_route: route.id.clone(),
-                            pool_address: route.pool_address.clone(),
-                            dex_label: DexLabel::RAYDIUM,
-                            token_0to1: route.token_0to1,
-                            token_in: route.tokenIn.clone(),
-                            token_out: route.tokenOut.clone(),
-                            amount_in: amount_in,
-                            estimated_amount_out: amount_out.clone(),
-                            estimated_min_amount_out: min_amount_out.clone(),
-                        };
-        
-                        //1rst route
-                        if i == 0 && !route_simulation.contains_key(&vec![path.id_paths[i]]) {
-                            route_simulation.insert(vec![route.id], vec![swap_sim.clone()]);
-                        }
-                        //2nd route
-                        if i == 1 && path.hops == 2 && !route_simulation.contains_key(&vec![path.id_paths[i - 1], path.id_paths[i]]){
-                            let swap_sim_prev_route = route_simulation.get(&vec![path.id_paths[i - 1]]).unwrap();
-                            route_simulation.insert(vec![path.id_paths[i - 1], path.id_paths[i]], vec![swap_sim_prev_route[0].clone() , swap_sim.clone()]);
-                        }
-                        
-                        swap_simulation_result.push(swap_sim.clone());
-                        amount_in = amount_out.as_str().parse().expect("Bad conversion String to f64");
-                    }
-                    Err(value) => {
-                        // println!("❌ ERROR HANDLED for route: {:?}", path.id_paths);
-                        error!("❌ ERROR HANDLED for route: {:?}", path.id_paths);
-                        error!("RAYDIUM POOL");
-                        error!("Address: {:?}", route.pool_address);
-                        // println!("❌ ERROR {:?}", value);
-                        error!("ERROR {:?}", value);
-                        println!("🔚 Skipped Path");
-                        let empty_result: Vec<SwapRouteSimulation> = Vec::new();
-                        return (route_simulation, empty_result, 0.0);
-                    }
-                }
 
-            },
-            DexLabel::RAYDIUM_CLMM => {
-                println!(" ⚠️⚠️ ONE RAYDIUM_CLMM POOL ");
-            },
-            DexLabel::METEORA => {
-                // println!(" ⚠️⚠️ ONE METEORA POOL ");
-                println!("🏊 METEORA - POOL");
-                println!("Address: {:?}", route.pool_address);
-                match simulate_route_meteora(true, amount_in, route.clone(), market.unwrap(), tokens_infos.clone()).await {
-                    Ok(value) => {
-                        let (amount_out, min_amount_out) = value;
-                        // println!("Amount out: {}", amount_out);
-        
                         let swap_sim: SwapRouteSimulation = SwapRouteSimulation{
                             id_route: route.id.clone(),
                             pool_address: route.pool_address.clone(),
-                            dex_label: DexLabel::METEORA,
+                            dex_label: dex_label,
                             token_0to1: route.token_0to1,
                             token_in: route.tokenIn.clone(),
                             token_out: route.tokenOut.clone(),
@@ -174,26 +78,22 @@ pub async fn simulate_path(simulation_amount: u64, path: SwapPath, markets: Vec<
                             estimated_amount_out: amount_out.clone(),
                             estimated_min_amount_out: min_amount_out.clone(),
                         };
-        
-                        //1rst route
+
                         if i == 0 && !route_simulation.contains_key(&vec![path.id_paths[i]]) {
                             route_simulation.insert(vec![route.id], vec![swap_sim.clone()]);
                         }
-                        //2nd route
-                        if i == 1 && path.hops == 2 && !route_simulation.contains_key(&vec![path.id_paths[i - 1], path.id_paths[i]]){
+                        if i == 1 && path.hops == 2 && !route_simulation.contains_key(&vec![path.id_paths[i - 1], path.id_paths[i]]) {
                             let swap_sim_prev_route = route_simulation.get(&vec![path.id_paths[i - 1]]).unwrap();
-                            route_simulation.insert(vec![path.id_paths[i - 1], path.id_paths[i]], vec![swap_sim_prev_route[0].clone() , swap_sim.clone()]);
+                            route_simulation.insert(vec![path.id_paths[i - 1], path.id_paths[i]], vec![swap_sim_prev_route[0].clone(), swap_sim.clone()]);
                         }
-                        
+
                         swap_simulation_result.push(swap_sim.clone());
                         amount_in = amount_out.as_str().parse().expect("Bad conversion String to f64");
                     }
                     Err(value) => {
-                        // println!("❌ ERROR HANDLED for route: {:?}", path.id_paths);
                         error!("❌ ERROR HANDLED for route: {:?}", path.id_paths);
-                        error!("METEORA POOL");
+                        error!("{:?} POOL", dex_label);
                         error!("Address: {:?}", route.pool_address);
-                        // println!("❌ ERROR {:?}", value);
                         error!("ERROR {:?}", value);
                         println!("🔚 Skipped Path");
                         let empty_result: Vec<SwapRouteSimulation> = Vec::new();
@@ -227,99 +127,21 @@ pub async fn simulate_path_precision(amount_input: u64, socket: Client, path: Sw
     for (i, route) in path.paths.iter().enumerate() {
         let market: Option<Market> = markets.iter().cloned().find(|market| market.id == route.pool_address);
 
-        match route.dex {
-            DexLabel::ORCA => {
-                // println!(" ⚠️⚠️ ONE ORCA POOL ");
+        let dex_label = route.dex.clone();
+        match dex_label {
+            DexLabel::ORCA | DexLabel::RAYDIUM_CLMM => {
+                let empty_result: Vec<SwapRouteSimulation> = Vec::new();
+                return (empty_result, 0.0);
             },
-            DexLabel::ORCA_WHIRLPOOLS => {
-                // println!("ORCA_WHIRLPOOLS - POOL");
-                // println!("Address: {:?}", route.pool_address);
-                match simulate_route_orca_whirpools(false, amount_in, route.clone(), market.unwrap(), tokens_infos.clone()).await {
+            DexLabel::ORCA_WHIRLPOOLS | DexLabel::RAYDIUM | DexLabel::METEORA => {
+                match simulate_route_jupiter(amount_in, &route.tokenIn, &route.tokenOut).await {
                     Ok(value) => {
                         let (amount_out, min_amount_out) = value;
-                        // println!("Amount out: {}", amount_out);
-                        
-                        let swap_sim: SwapRouteSimulation = SwapRouteSimulation{
-                            id_route: route.id.clone(),
-                            pool_address: route.pool_address.clone(),
-                            dex_label: DexLabel::ORCA_WHIRLPOOLS,
-                            token_0to1: route.token_0to1,
-                            token_in: route.tokenIn.clone(),
-                            token_out: route.tokenOut.clone(),
-                            amount_in: amount_in,
-                            estimated_amount_out: amount_out.clone(),
-                            estimated_min_amount_out: min_amount_out.clone(),
-                        };
-        
-                        swap_simulation_result.push(swap_sim.clone());
-                        amount_in = amount_out.as_str().parse().expect("Bad conversion String to f64");
-                    }
-                    Err(value) => {
-                        // println!("❌ ERROR HANDLED for route: {:?}", path.id_paths);
-                        error!("❌ PRECISION ERROR HANDLED for route: {:?}", path.id_paths);
-                        error!("ORCA_WHIRLPOOLS POOL");
-                        error!("Address: {:?}", route.pool_address);
-                        // println!("❌ ERROR {:?}", value);
-                        error!("ERROR {:?}", value);
-                        // println!("🔚 Skipped Path");
-                        let empty_result: Vec<SwapRouteSimulation> = Vec::new();
-                        return (empty_result, 0.0);
-                    }
-                }
-            },
-            DexLabel::RAYDIUM => {
-                // println!("RAYDIUM - POOL");
-                // println!("Address: {:?}", route.pool_address);
-                match simulate_route_raydium(false, amount_in, route.clone(), market.unwrap(), tokens_infos.clone()).await {
-                    Ok(value) => {
-                        let (amount_out, min_amount_out) = value;
-                        // println!("Amount out: {}", amount_out);
-        
-                        let swap_sim: SwapRouteSimulation = SwapRouteSimulation{
-                            id_route: route.id.clone(),
-                            pool_address: route.pool_address.clone(),
-                            dex_label: DexLabel::RAYDIUM,
-                            token_0to1: route.token_0to1,
-                            token_in: route.tokenIn.clone(),
-                            token_out: route.tokenOut.clone(),
-                            amount_in: amount_in,
-                            estimated_amount_out: amount_out.clone(),
-                            estimated_min_amount_out: min_amount_out.clone(),
-                        };
-                        
-                        swap_simulation_result.push(swap_sim.clone());
-                        amount_in = amount_out.as_str().parse().expect("Bad conversion String to f64");
-                    }
-                    Err(value) => {
-                        // println!("❌ ERROR HANDLED for route: {:?}", path.id_paths);
-                        error!("❌ PRECISION ERROR HANDLED for route: {:?}", path.id_paths);
-                        error!("RAYDIUM POOL");
-                        error!("Address: {:?}", route.pool_address);
-                        // println!("❌ ERROR {:?}", value);
-                        error!("ERROR {:?}", value);
-                        println!("🔚 Skipped Path");
-                        let empty_result: Vec<SwapRouteSimulation> = Vec::new();
-                        return (empty_result, 0.0);
-                    }
-                }
 
-            },
-            DexLabel::RAYDIUM_CLMM => {
-                // println!(" ⚠️⚠️ ONE RAYDIUM_CLMM POOL ");
-            },
-            DexLabel::METEORA => {
-                // println!(" ⚠️⚠️ ONE METEORA POOL ");
-                // println!("METEORA - POOL");
-                // println!("Address: {:?}", route.pool_address);
-                match simulate_route_meteora(false, amount_in, route.clone(), market.unwrap(), tokens_infos.clone()).await {
-                    Ok(value) => {
-                        let (amount_out, min_amount_out) = value;
-                        // println!("Amount out: {}", amount_out);
-        
                         let swap_sim: SwapRouteSimulation = SwapRouteSimulation{
                             id_route: route.id.clone(),
                             pool_address: route.pool_address.clone(),
-                            dex_label: DexLabel::RAYDIUM,
+                            dex_label: dex_label,
                             token_0to1: route.token_0to1,
                             token_in: route.tokenIn.clone(),
                             token_out: route.tokenOut.clone(),
@@ -327,18 +149,15 @@ pub async fn simulate_path_precision(amount_input: u64, socket: Client, path: Sw
                             estimated_amount_out: amount_out.clone(),
                             estimated_min_amount_out: min_amount_out.clone(),
                         };
-                        
+
                         swap_simulation_result.push(swap_sim.clone());
                         amount_in = amount_out.as_str().parse().expect("Bad conversion String to f64");
                     }
                     Err(value) => {
-                        // println!("❌ ERROR HANDLED for route: {:?}", path.id_paths);
                         error!("❌ PRECISION ERROR HANDLED for route: {:?}", path.id_paths);
-                        error!("METEORA POOL");
+                        error!("{:?} POOL", dex_label);
                         error!("Address: {:?}", route.pool_address);
-                        // println!("❌ ERROR {:?}", value);
                         error!("ERROR {:?}", value);
-                        // println!("🔚 Skipped Path");
                         let empty_result: Vec<SwapRouteSimulation> = Vec::new();
                         return (empty_result, 0.0);
                     }

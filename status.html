@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>VeM Bot — Status</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0d0d0d;
+      color: #e0e0e0;
+      font-family: 'Courier New', monospace;
+      padding: 20px;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .title { font-size: 11px; color: #555; letter-spacing: 3px; text-transform: uppercase; }
+    .meta { font-size: 11px; color: #555; }
+    .meta span { color: #14f195; }
+    .log-box {
+      background: #111;
+      border: 1px solid #1e1e1e;
+      border-radius: 8px;
+      padding: 16px;
+      height: calc(100vh - 80px);
+      overflow-y: auto;
+      font-size: 12px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .line-info  { color: #14f195; }
+    .line-warn  { color: #f1c40f; }
+    .line-error { color: #ff4444; }
+    .line-compile { color: #444; }
+    .line-default { color: #888; }
+    #status-dot {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #14f195;
+      margin-right: 6px;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="title"><span id="status-dot"></span>VeM Bot — Live Status</div>
+    <div class="meta">Auto-refresh: <span>3s</span> &nbsp;|&nbsp; Last: <span id="last-update">—</span> &nbsp;|&nbsp; Lines: <span id="line-count">—</span></div>
+  </header>
+  <div class="log-box" id="log"></div>
+
+  <script>
+    let lastLineCount = 0;
+    let autoScroll = true;
+
+    const logBox = document.getElementById('log');
+
+    logBox.addEventListener('scroll', () => {
+      const atBottom = logBox.scrollHeight - logBox.scrollTop - logBox.clientHeight < 40;
+      autoScroll = atBottom;
+    });
+
+    function classify(line) {
+      if (line.includes('INFO')) return 'line-info';
+      if (line.includes('WARN')) return 'line-warn';
+      if (line.includes('ERROR') || line.includes('error') || line.includes('panic')) return 'line-error';
+      if (line.startsWith('   Compiling') || line.startsWith('   Finished') || line.startsWith('warning:')) return 'line-compile';
+      return 'line-default';
+    }
+
+    async function load() {
+      try {
+        const res = await fetch('logs/bot.log?t=' + Date.now());
+        const text = await res.text();
+        const lines = text.split('\n');
+
+        if (lines.length !== lastLineCount) {
+          lastLineCount = lines.length;
+          logBox.innerHTML = lines.map(l =>
+            `<span class="${classify(l)}">${l}</span>`
+          ).join('\n');
+          if (autoScroll) logBox.scrollTop = logBox.scrollHeight;
+        }
+
+        document.getElementById('last-update').textContent = new Date().toLocaleTimeString();
+        document.getElementById('line-count').textContent = lines.length;
+      } catch(e) {
+        document.getElementById('last-update').textContent = 'Error: ' + e.message;
+      }
+    }
+
+    load();
+    setInterval(load, 3000);
+  </script>
+</body>
+</html>

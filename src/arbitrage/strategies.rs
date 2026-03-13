@@ -187,7 +187,7 @@ pub async fn run_arbitrage_strategy(simulation_amount: u64, get_fresh_pools_bool
         if (i != 0 && i % 300 == 0) || i == all_paths.len() - 1 {
             let file_number = i / 300;
             let symbols = tokens.iter().map(|token| &token.symbol).cloned().collect::<Vec<String>>().join("-");
-            let mut file = File::create(format!("results\\result_{}_{}.json", file_number, symbols)).unwrap();
+            let mut file = File::create(format!("results/result_{}_{}.json", file_number, symbols)).unwrap();
             match serde_json::to_writer_pretty(&mut file, &swap_paths_results) {
                 Ok(value) => {
                     info!("🥇🥇 Results writed!");

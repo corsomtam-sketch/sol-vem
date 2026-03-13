@@ -41,9 +41,9 @@ async fn main() -> Result<()> {
     let optimism_strategie: bool = true;
 
     //massive_strategie options
-    let fetch_new_pools = true; // First run: fetch fresh data to populate cache files
+    let fetch_new_pools = false; // Cache files populated — use cached data for faster startup
             // Restrict USDC/SOL pools to 2 markets
-    let restrict_sol_usdc = true;
+    let restrict_sol_usdc = false;
 
     //best_strategie options
     // let mut path_best_strategie: String = format!("best_paths_selected/SOL-SOLLY.json");
